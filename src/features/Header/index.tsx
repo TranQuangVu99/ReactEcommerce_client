@@ -1,0 +1,81 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
+import React, { Fragment, useEffect } from "react";
+import "features/HomePage/HomePage.scss";
+import Logo from "assets/images/logo.png";
+import Cart from "assets/images/cart.png";
+import Menu from "assets/images/menu.png";
+import { Link, withRouter } from "react-router-dom";
+import { RootState } from "app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { checkCart } from "features/Cart/cartSlice";
+import { history } from "index";
+import { Dropdown, Icon } from "semantic-ui-react";
+import Auth from "./Auth";
+
+function Header() {
+  const carts = useSelector((state: RootState) => state.cart.carts);
+
+  
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkCart());
+  }, []);
+  const moveToHomePage = () => {
+    history.push("/");
+  };
+  return (
+    <Fragment>
+      <div className="header">
+        <div className="container">
+          <div className="navbar">
+            <div className="logo">
+              <img
+                src={Logo}
+                alt=""
+                width="125px"
+                onClick={moveToHomePage}
+                style={{ cursor: "pointer" }}
+              />
+            </div>
+            <nav>
+              <ul id="MenuItems">
+                <li>
+                  <Link to="/"> Trang Chủ </Link>
+                </li>
+                <li>
+                  <Link to="/products"> Sản Phẩm </Link>
+                </li>
+                <li>
+                  <Link to="/about"> About </Link>
+                </li>
+                <li>
+                  <Link to="/contact"> Liên Hệ </Link>
+                </li>
+
+                <li>
+                  <Link to="/orderhistory">Lịch Sử Mua Hàng</Link>
+                </li>
+                
+                <Auth/>
+              </ul>
+            </nav>
+            <Link to="/cart">
+              <div className="logo-cart">
+                <img src={Cart} alt="" />
+                <div className="wrap-icon">
+                  {carts.reduce((pre, cur) => {
+                    return pre + cur.quantity;
+                  }, 0)}
+                </div>
+              </div>
+            </Link>
+            <img src={Menu} alt="" className="menu-icon" />
+          </div>
+        </div>
+      </div>
+    </Fragment>
+  );
+}
+
+export default Header;
