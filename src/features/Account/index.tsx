@@ -4,13 +4,13 @@ import "./style.scss";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import {login , register} from './accountSlice'
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { RootState } from "app/store";
-import { toast, ToastContainer, Zoom } from "react-toastify";
+
 
 function AccountPage() {
   const [isShow, setIsShow] = useState(true);
   //const [debounceUserName,userName, setUserName] = useDebounce<string>('',1500)
+
   const [userName, setUserName] = useState<string>('')
   const [passwordLogin, setPasswordLogin] = useState<string>('')
   const [nameLogin, setNameLogin] = useState<string>('')

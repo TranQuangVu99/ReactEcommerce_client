@@ -9,7 +9,7 @@ interface IProps{
 }
 
 const CheckoutForm:React.FC<IProps> = ({totalPrice})=> {
-
+  const {carts} = useSelector((state : RootState) => state.cart)
   const CARD_ELEMENT_OPTIONS = {
     style: {
       base: {
@@ -37,8 +37,14 @@ const CheckoutForm:React.FC<IProps> = ({totalPrice})=> {
       return;
     }
 
-    const res = await paymentApi.payment({email : email , totalPrice : totalPrice})
-
+    const res = await paymentApi.payment(
+      {
+        email : email , 
+        totalPrice : totalPrice,
+        estimatedDelivery:new Date(),
+      },
+      carts
+    )
     const clientSecret = res.client_secret
 
     const result = await stripe.confirmCardPayment(clientSecret, {

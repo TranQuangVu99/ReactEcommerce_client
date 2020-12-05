@@ -10,6 +10,7 @@ const Order = () => {
   const [isCheck, setIsCheck] = useState(true);
   const priceShip = useSelector((state: RootState) => state.cart.priceShip);
   const { carts, products } = useSelector((state: RootState) => state.cart);
+  const { addresses } = useSelector((state: RootState) => state.addresses);
   const dispatch = useDispatch();
 
   const handleRaio = () => {
@@ -54,16 +55,19 @@ const Order = () => {
                       </small>
                     </strong>
                     <div>
-                      <ul className="displayUl">
-                        <li>Address fullname</li>
-                        <li>streetAddress</li>
-                        <li>city</li>
-                        <li>country</li>
+                      {addresses.map(address => (
+                        <ul className="displayUl">
+                        <li>{address.fullName}</li>
+                      <li>{address.streetAddress}</li>
+                      <li>{address.city} , { address.state}</li>
+                        <li>{address.country}</li>
                         <li>
                           Phone:
-                          <span> number</span>
+                          <span> {address.phoneNumber}</span>
                         </li>
                       </ul>
+                      ))}
+                      
                     </div>
                   </div>
                   <div className="col-2">

@@ -6,7 +6,9 @@ export interface ICartItem{
      indexColor : string,
      capacity : number,
      colorCostPlus : number,
-     capacityCostPlus : number 
+     capacityCostPlus : number,
+     photo : string,
+     colorName : string
 }
 export interface IProductsAndCarts {
     products : IProduct[],

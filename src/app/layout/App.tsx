@@ -23,7 +23,6 @@ import OrderHistory from "features/OrderHistory";
 import Policy from "features/Policy";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
-  console.log(location);
 
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -48,13 +47,14 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
       <Route exact path="/" component={HomePage} />
       <Switch>
         <Route path="/products" component={ProductPage} />
+        <Route path="/policy" component={Policy} />
         <Route exact path="/cart" component={Carts} />
         <Route exact path="/account" component={AccountPage} />
         <Route exact path="/address" component={Address} />
         <Route exact path="/order" component={Order} />
         <Route exact path="/payment" component={Payment} />
         <Route exact path="/orderhistory" component={OrderHistory} />
-        <Route path="/policy" component={Policy} />
+      
       </Switch>
       <Footer />
     </Fragment>

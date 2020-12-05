@@ -1,11 +1,11 @@
 
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import accountApi from "app/api/account";
-import { ILoginForm, INewUser, IResponseUser, IUser } from "app/models/account";
+import { ILoginForm, INewUser, IResponseUser } from "app/models/account";
 import { IErrorFromAPI } from "app/models/error";
 import { messageSuccess , messageError} from "app/notification/message";
 import { history } from "index";
-import { toast } from "react-toastify";
+
 
 
 import { ILogin } from "./types/account";

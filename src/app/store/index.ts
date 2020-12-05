@@ -3,6 +3,7 @@ import cartReducer from 'features/Cart/cartSlice'
 import accountReducer from 'features/Account/accountSlice'
 import paymentReducer from 'features/Payment/paymentSlice'
 import orderHistoryReducer from 'features/OrderHistory/orderHistorySlice'
+import addressReducer from 'features/Address/addressSlice'
 import { configureStore, combineReducers,Action } from "@reduxjs/toolkit";
 import {ThunkAction} from "redux-thunk"
 
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     cart : cartReducer,
     account: accountReducer,
     payment : paymentReducer,
-    orderHistory : orderHistoryReducer
+    orderHistory : orderHistoryReducer,
+    addresses : addressReducer
 })
 
 // khởi tạo store

@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { addNewItemCart } from "features/Cart/cartSlice";
 import NumberFormat from "react-number-format";
 import CommentPage from "features/Comment";
+import { ICartItem } from "features/Cart/types/cartItem";
 
 interface IParams {
   productID: string;
@@ -22,23 +23,28 @@ const ProductItem: React.FC = () => {
   const [productData, setProductData] = useState<IProductDetail>();
   const [isLoad, setIsLoad] = useState<Boolean>(true);
 
-  const [color, setColor] = useState("");
-  const [capacity, setCapacity] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+  const [state, setState] = useState<ICartItem>({
+    capacity : 0,
+    capacityCostPlus: 0,
+    indexColor: '',
+    colorCostPlus: 0,
+    productID: '',
+    quantity: 0,
+    photo: '',
+    colorName:''
+  })
 
-  const handleChangeColor = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setColor(value)
+  const handleChangeColor = (name : string,indexColor : string, cost : number, photo : string) => {
+    setState({...state,colorName: name, indexColor: indexColor, colorCostPlus : cost, photo: photo})
   };
 
   const handleChangeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
-    setQuantity(value)
+    setState({...state,quantity:value})
   };
 
-  const handleChangeCapacity = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = parseInt(e.target.value);  
-    setCapacity(value)
+  const handleChangeCapacity = (name:number,cost: number) => {
+    setState({...state,capacity:name,capacityCostPlus:cost})
   };
 
   useEffect(() => {
@@ -51,14 +57,7 @@ const ProductItem: React.FC = () => {
   const dispatch = useDispatch();
   const handleAddToCart = () => {
     dispatch(
-      addNewItemCart({
-        productID: productID,
-        quantity: quantity,
-        capacity: capacity,
-        capacityCostPlus: productData?.capacities[0].plusCost!,
-        indexColor: color,
-        colorCostPlus: productData?.colors[0].color.plusCost!,
-      })
+      addNewItemCart(state)
     );
   };
 
@@ -69,7 +68,7 @@ const ProductItem: React.FC = () => {
         <div className="row">
           <div className="col-2">
             <img
-              src={productData?.colors[0].image.photo}
+              src={state.photo? state.photo:productData?.colors[0].image.photo}
               alt=""
               width="100%"
               id="product-img"
@@ -92,7 +91,6 @@ const ProductItem: React.FC = () => {
             <p>Home / IPhone</p>
             <h1>{productData?.name}</h1>
             <h4>
-              {" "}
               <NumberFormat
                 value={productData?.priceOnSales}
                 displayType={"text"}
@@ -100,55 +98,30 @@ const ProductItem: React.FC = () => {
               />{" "}
               ₫
             </h4>
-            <select onChange={(e) => handleChangeCapacity(e)}>
-            <option value={180}>180GB</option>
+            <select>
               {productData?.capacities.map((capacity) => (
-                <option value={capacity.capacity}>{capacity.capacity}GB</option>
+                <option value={capacity.capacity} onClick={e=>handleChangeCapacity(capacity.capacity,capacity.plusCost)} >{capacity.capacity}GB</option>
                 
               ))}
             </select>
             <div className="color-container">
-              <h3 className="title-color">Color</h3>
-              {productData?.colors.map((color) => (
-              <div className="colors">
+              <h3 className="title-color">Color</h3>  <div className="colors">
+              {productData?.colors.map((color,index) => (
+            
               
-                  <span
+                  <span onClick ={(e) => handleChangeColor(color.color.nameColor, color.color.indexColor, color.color.plusCost, color.image.photo)}
                     className="color"
-                    data-primary={color.color.indexColor}
+                    style={{backgroundColor:color.color.indexColor}}
                     color={color.color.nameColor}
                   ></span>
                
-                <span
-                  className="color"
-                  data-primary="#2175f5"
-                  color="blue"
-                ></span>
-                <span
-                  className="color"
-                  data-primary="#f84848"
-                  color="red"
-                ></span>
-                <span
-                  className="color"
-                  data-primary="#29b864"
-                  color="green"
-                ></span>
-                <span
-                  className="color"
-                  data-primary="#ff5521"
-                  color="orange"
-                ></span>
-                <span
-                  className="color"
-                  data-primary="#444"
-                  color="black"
-                ></span>
-              </div>
-                ))}
+                
+            
+                ))}  </div>
             </div>
           
             <input type="number"
-                  value={quantity}
+                  value={state.quantity}
                   width="auto"
                   min="1"
                   max="10" onChange={(e) => handleChangeQuantity(e)} />
