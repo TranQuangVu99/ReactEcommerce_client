@@ -4,16 +4,15 @@ import "features/HomePage/HomePage.scss";
 import Logo from "assets/images/logo.png";
 import Cart from "assets/images/cart.png";
 import Menu from "assets/images/menu.png";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { RootState } from "app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { checkCart } from "features/Cart/cartSlice";
-import { history } from "index";
 import Auth from "./Auth";
 
 function Header() {
   const carts = useSelector((state: RootState) => state.cart.carts);
-
+  const history = useHistory()
   
   const dispatch = useDispatch();
 

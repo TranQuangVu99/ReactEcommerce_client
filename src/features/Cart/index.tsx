@@ -4,21 +4,23 @@ import { RootState } from "app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsByIds, removeItem, updateQuantity } from "./cartSlice";
 import NumberFormat from "react-number-format";
-import { useHistory, withRouter } from "react-router-dom";
+import {  useHistory, withRouter } from "react-router-dom";
 
 function Carts() {
   const { products, carts } = useSelector((state: RootState) => state.cart);
-  console.log(carts)
+  const isLogin = useSelector((state: RootState) => state.account.isLogin)
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (carts.length > 0)
       dispatch(fetchProductsByIds(carts.map((cart) => cart.productID)));
+
   }, [carts]);
 
-  const handleChangeQuantity = (id: string, value: string) => {
+  const handleChangeQuantity = (index: number, value: string) => {
     const valueNumber = Number(value);
-    dispatch(updateQuantity({ productID: id, quantity: valueNumber }));
+    dispatch(updateQuantity({ index, quantity: valueNumber }));
   };
 
   function subTotal() {
@@ -26,7 +28,6 @@ function Carts() {
     if (carts.length === 0) return 0;
     if (products.length === 0) return 0;
     products.map((product, index) => {
-      console.log(subtotal)
       subtotal += (carts[index].quantity) * (product.priceOnSales  + carts[index].capacityCostPlus + carts[index].colorCostPlus) ;
     });
     
@@ -34,13 +35,17 @@ function Carts() {
   }
 
   const handleRemoveItem = (id: string) => {
-    console.log(id);
-
     dispatch(removeItem(id));
   };
 
   const history = useHistory()
-
+  const handleAddToOrder = () =>{
+    if (isLogin === false){
+      history.push('/account')
+    }else
+      history.push('/order')
+  }
+  
   return (
     <Fragment>
       {/**Cart Item */}
@@ -48,8 +53,8 @@ function Carts() {
         <table>
           <tr>
             <th>Sản phẩm</th>
-            <th>Dung lượng</th>
-            <th>Màu sắc</th>
+            <th>Dung lượng  </th>
+            <th>Màu sắc </th>
             <th>Số lượng</th>
             <th>Thành tiền</th>
           </tr>
@@ -63,7 +68,7 @@ function Carts() {
                     <small>
                       Giá tiền:{" "}
                       <NumberFormat
-                        value={product.priceOnSales}
+                        value={ (product.priceOnSales  + carts[index].capacityCostPlus + carts[index].colorCostPlus)}
                         displayType={"text"}
                         thousandSeparator={true}
                       />{" "}
@@ -77,10 +82,10 @@ function Carts() {
                 </div>
               </td>
               <td>
-                {carts[index].capacity}GB {" :"} {carts[index].capacityCostPlus} ₫
+                {carts[index].capacity} GB
               </td>
               <td >
-                <span style={{background:`${carts[index].indexColor}`}}>{carts[index].indexColor}</span>  {" :"} {carts[index].colorCostPlus} ₫
+                <span style={{background:`${carts[index].colorName}`}}>{carts[index].colorName}</span> 
               </td>
               <td>
                 <input
@@ -90,13 +95,13 @@ function Carts() {
                   min="1"
                   max="10"
                   onChange={(e) =>
-                    handleChangeQuantity(product._id, e.target.value)
+                    handleChangeQuantity(index, e.target.value)
                   }
                 />
               </td>
               <td>
                 <NumberFormat
-                  value={subTotal()}
+                  value={(carts[index].quantity) * (product.priceOnSales  + carts[index].capacityCostPlus + carts[index].colorCostPlus)}
                   displayType={"text"}
                   thousandSeparator={true}
                 />{" "}
@@ -108,7 +113,7 @@ function Carts() {
         <div className="total-price">
           <table>
             <tr>
-              <td>Thành tiền</td>
+              <td>Tạm tính</td>
               <td>
                 <NumberFormat
                   value={subTotal()}
@@ -120,13 +125,13 @@ function Carts() {
             </tr>
             <tr>
               <td>Item</td>
-              <td>1</td>
+                <td>{carts.length}</td>
             </tr>
             
           </table>
         </div>
         <div className="btn-payment">
-          <div className='btn' onClick={() => history.push('/order')} >Đặt Hàng</div>
+          <div className='btn' onClick={() => handleAddToOrder()} >Đặt Hàng</div>
         </div>
       </div>
     </Fragment>

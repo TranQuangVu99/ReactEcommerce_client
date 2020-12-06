@@ -1,17 +1,23 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "./Order.scss";
 import NumberFormat from "react-number-format";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "app/store";
 import { setPriceShip, setScript } from "features/Cart/cartSlice";
+import { fetchAllAddress } from "features/Account/accountSlice";
 
 const Order = () => {
+  const isLogin = useSelector((state: RootState) => state.account.isLogin);
+
   const [isCheck, setIsCheck] = useState(true);
+
   const priceShip = useSelector((state: RootState) => state.cart.priceShip);
+
   const { carts, products } = useSelector((state: RootState) => state.cart);
-  console.log(carts);
-  const { addresses } = useSelector((state: RootState) => state.addresses);
+
+  const { defalutAddress } = useSelector((state: RootState) => state.account);
+
   const dispatch = useDispatch();
 
   const handleRaio = () => {
@@ -19,6 +25,7 @@ const Order = () => {
     if (isCheck) dispatch(setPriceShip(100000));
     else dispatch(setPriceShip(30000));
   };
+
   const subTotal = () => {
     let subtotal = 0;
     if (carts.length === 0) return 0;
@@ -41,6 +48,11 @@ const Order = () => {
   useEffect(() => {
     dispatch(setScript(true));
   }, []);
+
+  if (!isLogin) return <Redirect to="/account" />;
+
+  if(!defalutAddress) return <Redirect to="/address" />;
+
   return (
     <Fragment>
       <h2 style={{ marginLeft: "160px", marginBottom: "50px" }}>
@@ -60,20 +72,18 @@ const Order = () => {
                       </small>
                     </strong>
                     <div>
-                      {addresses.map((address) => (
-                        <ul className="displayUl">
-                          <li>{address.fullName}</li>
-                          <li>{address.streetAddress}</li>
-                          <li>
-                            {address.city} , {address.state}
-                          </li>
-                          <li>{address.country}</li>
-                          <li>
-                            Phone:
-                            <span> {address.phoneNumber}</span>
-                          </li>
-                        </ul>
-                      ))}
+                      <ul className="displayUl">
+                        <li>{defalutAddress.fullName}</li>
+                        <li>{defalutAddress.streetAddress}</li>
+                        <li>
+                          {defalutAddress.city} , {defalutAddress.state}
+                        </li>
+                        <li>{defalutAddress.country}</li>
+                        <li>
+                          Phone:
+                          <span> {defalutAddress.phoneNumber}</span>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                   <div className="col-2">
@@ -192,7 +202,7 @@ const Order = () => {
                   <table>
                     <tr>
                       <th>Item</th>
-                      <th>1</th>
+                      <th>{carts.length}</th>
                     </tr>
                     <tr>
                       <td>Thành Tiền</td>

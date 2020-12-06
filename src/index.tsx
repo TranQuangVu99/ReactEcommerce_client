@@ -9,7 +9,8 @@ import { createBrowserHistory } from "history";
 import "semantic-ui-css/semantic.min.css";
 import ScrollToTop from "app/layout/ScrollToTop";
 import 'react-toastify/dist/ReactToastify.css';
-export const history = createBrowserHistory();
+
+export const history = createBrowserHistory()
 
 ReactDOM.render(
   <Router>

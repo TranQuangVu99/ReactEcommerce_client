@@ -1,3 +1,5 @@
+import { IAddress } from "./address";
+
 export interface ILoginForm{
     namelogin: string,
     password : string
@@ -7,7 +9,8 @@ export interface IResponseLogin{
     success : boolean,
     token : string,
     email: string,
-    username : string
+    username : string,
+    address:IAddress
 }
 
 export interface IUser{
@@ -16,7 +19,7 @@ export interface IUser{
     email : string
     namelogin: string
     password: string
-
+    address:IAddress
 }
 
 export interface IResponseUser{

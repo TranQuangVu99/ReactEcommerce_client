@@ -22,6 +22,7 @@ import { ToastContainer } from "react-toastify";
 import OrderHistory from "features/OrderHistory";
 import Policy from "features/Policy";
 
+
 const App: React.FC<RouteComponentProps> = ({ location }) => {
 
   const [loading, setLoading] = useState(true);
@@ -54,7 +55,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
         <Route exact path="/order" component={Order} />
         <Route exact path="/payment" component={Payment} />
         <Route exact path="/orderhistory" component={OrderHistory} />
-      
+        
       </Switch>
       <Footer />
     </Fragment>

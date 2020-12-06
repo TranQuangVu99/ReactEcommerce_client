@@ -1,11 +1,13 @@
 import { RootState } from "app/store";
+import { logout } from "features/Account/accountSlice";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { Dropdown } from "semantic-ui-react";
 
 
 const Auth = () => {
+  const dispatch = useDispatch()
     const history = useHistory()
   const { username, isLogin } = useSelector(
     (state: RootState) => state.account
@@ -39,7 +41,12 @@ const Auth = () => {
   ) : (
     <Dropdown
       onChange={(e, { name, value }) => {
-        history.push(value+'');
+        if(value+'' === '/logout'){
+          dispatch(logout())
+        history.push('/')
+        }
+        else
+          history.push(value+'');
       }}
       trigger={trigger}
       options={options}

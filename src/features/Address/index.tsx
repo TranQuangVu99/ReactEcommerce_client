@@ -1,13 +1,13 @@
 import { RootState } from "app/store";
+import { fetchAllAddress, insertNewAddress } from "features/Account/accountSlice";
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Form, Header, Modal } from "semantic-ui-react";
+import { Button, Card, Form, Header, Modal } from "semantic-ui-react";
 import "./Addess.scss";
-import { addNewAddress, fetchAllAddress } from "./addressSlice";
 function Address() {
-  const {addresses} = useSelector((state: RootState) => state.addresses);
+
+  const addresses = useSelector((state: RootState) => state.account.addresses);
   
-  console.log(addresses)
   const [open, setOpen] = React.useState(false);
   const [contruy, setContruy] = useState("");
   const [fullName, setFullName] = useState("");
@@ -45,23 +45,30 @@ function Address() {
     const value = e.target.value;
     setNumberPhone(value);
   };
-  const dispatch = useDispatch()
+
+  const dispatch = useDispatch();
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    dispatch(addNewAddress({
-      country : contruy,
-      fullName: fullName,
-      streetAddress : street,
-      city : city,
-      state:region,
-      zipCode : parseInt(zipCode),
-      phoneNumber:numberPhone
-    }))
+    dispatch(
+      insertNewAddress({
+        country: contruy,
+        fullName: fullName,
+        streetAddress: street,
+        city: city,
+        state: region,
+        zipCode: parseInt(zipCode),
+        phoneNumber: numberPhone,
+        _id:"",
+        user: ""
+      })
+    );
+    
     setOpen(false);
   };
-  
+
   useEffect(() => {
-    dispatch(fetchAllAddress())
-  }, [])
+    dispatch(fetchAllAddress());
+  }, []);
+
   return (
     <Fragment>
       <div className="small-container">
@@ -160,38 +167,37 @@ function Address() {
             </Modal>
           </div>
           <div className="col-2">
-          {addresses.map((address) => (
-            <div className="a-box-normal">
-              <div className="a-box-inner" style={{ padding: "0!important" }}>
-                <div className="address-section">
-                  
-                    <ul className="nonstyle">
-                      <li>
-                        <h5>
-                          <b>
-                            {address.fullName}
-                          </b>
-                        </h5>
-                      </li>
-                      <li>{address.streetAddress}</li>
-                      <li>
-                        {address.city}, {address.state} {address.zipCode}
-                      </li>
-                      <li>{address.country}</li>
-                      <li>Phone number: {address.phoneNumber}</li>
-                    </ul>
-                  
-                  <div className="edit-address">
-                    <div>Edit</div>
-                    &nbsp; |&nbsp;
-                    <div>Delete</div>
-                    &nbsp; |&nbsp;
-                    <div>Set as Default</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            ))}
+            <Card.Group>
+              {addresses.map((address) => (
+                <Card style={{ width: "70%" }}>
+                  <Card.Content>
+                    <Card.Header>{address.fullName}</Card.Header>
+                    <Card.Description>
+                      {address.streetAddress}
+                      <br />
+                      {address.city}, {address.state} {address.zipCode}
+                      <br />
+                      {address.country}
+                      <br />
+                      Phone number : {address.phoneNumber}
+                    </Card.Description>
+                  </Card.Content>
+                  <Card.Content extra>
+                    <div className="ui three buttons">
+                      <Button basic color="green">
+                        Edit
+                      </Button>
+                      <Button basic color="red">
+                        Delete
+                      </Button>
+                      <Button basic color="blue">
+                        Set as Default
+                      </Button>
+                    </div>
+                  </Card.Content>
+                </Card>
+              ))}
+            </Card.Group>
           </div>
         </div>
       </div>

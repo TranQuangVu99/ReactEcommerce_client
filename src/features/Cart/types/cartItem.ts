@@ -10,6 +10,12 @@ export interface ICartItem{
      photo : string,
      colorName : string
 }
+
+export interface ICartIndexAndQuantity{
+    index : number,
+    quantity : number
+}
+
 export interface IProductsAndCarts {
     products : IProduct[],
     carts : ICartItem []

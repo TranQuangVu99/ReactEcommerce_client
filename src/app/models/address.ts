@@ -1,14 +1,5 @@
 
-export interface INewAddress {
-    country:string,
-    fullName:string,
-    streetAddress:string,
-    city:string,
-    state:string,
-    zipCode:number,
-    phoneNumber:string,
-    
-}
+
 export interface IAddress {
     _id: string,
     user: string

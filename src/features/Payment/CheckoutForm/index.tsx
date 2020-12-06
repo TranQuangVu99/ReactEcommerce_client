@@ -1,8 +1,10 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import paymentApi from "app/api/payment";
+import { messageError, messageSuccess } from "app/notification/message";
 import { RootState } from "app/store";
 import React from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 interface IProps{
     totalPrice:number
@@ -31,7 +33,7 @@ const CheckoutForm:React.FC<IProps> = ({totalPrice})=> {
   const {email,isLogin} = useSelector((state : RootState) => state.account)
   const stripe = useStripe();
   const elements = useElements();
-
+  const history = useHistory()
   const handleSubmit = async (event:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!stripe || !elements) {
       return;
@@ -55,15 +57,16 @@ const CheckoutForm:React.FC<IProps> = ({totalPrice})=> {
         },
       },
     });
-
-    console.log(result);
     
     if (result.error) {
       console.log(result.error.message);
+      messageError("Thanht toán thất bại")
     } else {
       // The payment has been processed!
       if (result.paymentIntent?.status === "succeeded") {
         console.log("Money is in the bank!");
+        messageSuccess("Thanh toán thành công")
+        history.push('/')
 
       }
     }

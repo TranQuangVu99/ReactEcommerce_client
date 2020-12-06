@@ -1,15 +1,15 @@
 import React, { Fragment, useState } from "react";
 import Image1 from "assets/images/image1-1.png";
 import "./style.scss";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { Link, useHistory, withRouter } from "react-router-dom";
 import {login , register} from './accountSlice'
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "app/store";
 
 
 function AccountPage() {
+
   const [isShow, setIsShow] = useState(true);
-  //const [debounceUserName,userName, setUserName] = useDebounce<string>('',1500)
 
   const [userName, setUserName] = useState<string>('')
   const [passwordLogin, setPasswordLogin] = useState<string>('')
@@ -19,10 +19,14 @@ function AccountPage() {
   const [passwordRegister, setPasswordRegister] = useState<string>('')
   
   const dispatch = useDispatch()
+
+  const history = useHistory()
+
   const isLogin = useSelector((state: RootState) => state.account.isLogin)
 
   if(isLogin)
-  return(<Redirect to="/"></Redirect>)
+    history.push("/")
+
   const handleClick = (toggle: boolean) => {
     setIsShow(toggle);
   };
@@ -55,13 +59,11 @@ function AccountPage() {
     setPasswordRegister(value) 
      
   }
-
-
-  
   
   const handleSubmitFormLogin =()=>{
       dispatch(login({namelogin:userName , password : passwordLogin}))
   }
+  
   const handleSubmitRegister =() =>{
     try {
       dispatch(register({

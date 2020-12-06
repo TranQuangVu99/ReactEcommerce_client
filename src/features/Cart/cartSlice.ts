@@ -1,10 +1,11 @@
-import { ICartItem ,IProductsAndCarts} from "./types/cartItem";
+import { ICartItem ,IProductsAndCarts, ICartIndexAndQuantity} from "./types/cartItem";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { IProduct } from "app/models/product";
 import productApi from "app/api/product";
 import { IErrorFromAPI } from "app/models/error";
 import { AppDispatch, AppThunk } from "app/store";
 import { history } from "index";
+import { messageSuccess } from "app/notification/message";
 
 interface ICartState {
   carts: ICartItem[];
@@ -63,26 +64,13 @@ const cartSlice = createSlice({
       state.script = payload
     },
     addNewItemCart(state, { payload }: PayloadAction<ICartItem>) {
-      const index = state.carts.findIndex(
-        (x) => x.productID === payload.productID
-      );
-      if (index !== -1) {
-        state.carts[index].quantity += 1;
-      } else {
-        state.carts.push(payload);
-      }
+      state.carts.push(payload);
       const cartsJson = JSON.stringify(state.carts);
       window.localStorage.setItem("carts", cartsJson);
     },
-    updateQuantity(state, { payload }) {
-      const index = state.carts.findIndex(
-        (x) => x.productID === payload.productID
-      );
-      if (index !== -1) {
-        state.carts[index].quantity = payload.quantity;
-      } else {
-        state.carts.push(payload);
-      }
+    updateQuantity(state, { payload } : PayloadAction<ICartIndexAndQuantity>) {
+      
+      state.carts[payload.index].quantity = payload.quantity
       const cartsJson = JSON.stringify(state.carts);
       window.localStorage.setItem("carts", cartsJson);
     },
