@@ -14,10 +14,12 @@ const initialState: IOderHistoryState = {
 };
 
 export const fetchAllOderHistory = createAsyncThunk(
-    "product/fetchAllOderHistory",
+    "orderHistory/fetchAllOderHistory",
     async (None,thunkAPI) => {
       try {
          const data = await orderHistoryApi.getAllOderHistory()
+         console.log(data);
+         // data là 
          return data.orders;
       } catch (error) {
         const err = error as IErrorFromAPI;

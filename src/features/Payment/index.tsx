@@ -26,8 +26,14 @@ function Payment() {
     if (carts.length === 0) return 0;
     if (products.length === 0) return 0;
     products.map((product, index) => {
-      subtotal += carts[index].quantity * product.priceOnSales;
+      console.log(subtotal);
+      subtotal +=
+        carts[index].quantity *
+        (product.priceOnSales +
+          carts[index].capacityCostPlus +
+          carts[index].colorCostPlus);
     });
+
     return subtotal;
   };
   const totalPrice = () => {

@@ -10,6 +10,7 @@ const Order = () => {
   const [isCheck, setIsCheck] = useState(true);
   const priceShip = useSelector((state: RootState) => state.cart.priceShip);
   const { carts, products } = useSelector((state: RootState) => state.cart);
+  console.log(carts);
   const { addresses } = useSelector((state: RootState) => state.addresses);
   const dispatch = useDispatch();
 
@@ -18,17 +19,21 @@ const Order = () => {
     if (isCheck) dispatch(setPriceShip(100000));
     else dispatch(setPriceShip(30000));
   };
-  const subTotal =() => {
+  const subTotal = () => {
     let subtotal = 0;
     if (carts.length === 0) return 0;
     if (products.length === 0) return 0;
     products.map((product, index) => {
-      console.log(subtotal)
-      subtotal += (carts[index].quantity) * (product.priceOnSales  + carts[index].capacityCostPlus + carts[index].colorCostPlus) ;
+      console.log(subtotal);
+      subtotal +=
+        carts[index].quantity *
+        (product.priceOnSales +
+          carts[index].capacityCostPlus +
+          carts[index].colorCostPlus);
     });
-    
-    return subtotal ;
-  }
+
+    return subtotal;
+  };
   const totalPrice = () => {
     return subTotal() + priceShip;
   };
@@ -55,19 +60,20 @@ const Order = () => {
                       </small>
                     </strong>
                     <div>
-                      {addresses.map(address => (
+                      {addresses.map((address) => (
                         <ul className="displayUl">
-                        <li>{address.fullName}</li>
-                      <li>{address.streetAddress}</li>
-                      <li>{address.city} , { address.state}</li>
-                        <li>{address.country}</li>
-                        <li>
-                          Phone:
-                          <span> {address.phoneNumber}</span>
-                        </li>
-                      </ul>
+                          <li>{address.fullName}</li>
+                          <li>{address.streetAddress}</li>
+                          <li>
+                            {address.city} , {address.state}
+                          </li>
+                          <li>{address.country}</li>
+                          <li>
+                            Phone:
+                            <span> {address.phoneNumber}</span>
+                          </li>
+                        </ul>
                       ))}
-                      
                     </div>
                   </div>
                   <div className="col-2">
@@ -103,14 +109,11 @@ const Order = () => {
               <div className="a-box-inner">
                 <h4>Estimate Delivery : 24 December , 2020</h4>
                 <div className="cart-placeorder">
-                  {products.map((product, index) => (
-                    <div className="col-7">
+                  <div className="col-7">
+                    {products.map((product, index) => (
                       <div className="row-order">
                         <div className="col-2-cart">
-                          <img
-                            src={product.colors[index].image.photo}
-                            alt=""
-                          ></img>
+                          <img src={carts[index].photo} alt=""></img>
                         </div>
                         <div className="col-2-cart">
                           <strong>{product.name}</strong>
@@ -134,8 +137,8 @@ const Order = () => {
                           </span>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
 
                   <div className="col-3">
                     <h4>Lựa Chọn Hình Thức:</h4>
@@ -198,7 +201,8 @@ const Order = () => {
                           value={subTotal()}
                           displayType={"text"}
                           thousandSeparator={true}
-                        /> ₫
+                        />{" "}
+                        ₫
                       </td>
                     </tr>
                     <tr>
@@ -208,7 +212,8 @@ const Order = () => {
                           value={priceShip}
                           displayType={"text"}
                           thousandSeparator={true}
-                        /> ₫
+                        />{" "}
+                        ₫
                       </td>
                     </tr>
                   </table>

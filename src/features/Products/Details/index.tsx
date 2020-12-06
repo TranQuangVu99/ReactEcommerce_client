@@ -21,44 +21,77 @@ const ProductItem: React.FC = () => {
   const { productID } = useParams<IParams>();
 
   const [productData, setProductData] = useState<IProductDetail>();
+
   const [isLoad, setIsLoad] = useState<Boolean>(true);
 
   const [state, setState] = useState<ICartItem>({
-    capacity : 0,
+    capacity: 0,
     capacityCostPlus: 0,
-    indexColor: '',
+    indexColor: "",
     colorCostPlus: 0,
-    productID: '',
-    quantity: 0,
-    photo: '',
-    colorName:''
-  })
+    productID: "",
+    quantity: 1,
+    photo: "",
+    colorName: "",
+  });
 
-  const handleChangeColor = (name : string,indexColor : string, cost : number, photo : string) => {
-    setState({...state,colorName: name, indexColor: indexColor, colorCostPlus : cost, photo: photo})
+  const handleChangeColor = (
+    name: string,
+    indexColor: string,
+    cost: number,
+    photo: string
+  ) => {
+    setState({
+      ...state,
+      colorName: name,
+      indexColor: indexColor,
+      colorCostPlus: cost,
+      photo: photo,
+    });
   };
 
   const handleChangeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
-    setState({...state,quantity:value})
+    setState({ ...state, quantity: value });
   };
 
-  const handleChangeCapacity = (name:number,cost: number) => {
-    setState({...state,capacity:name,capacityCostPlus:cost})
+  const handleChangeCapacity = (name: number, cost: number) => {
+    setState({ ...state, capacity: name, capacityCostPlus: cost });
+  };
+
+  const subTotal = () => {
+    let subtotal = 0;
+    subtotal +=
+      (productData?.priceOnSales! +
+        state.capacityCostPlus +
+        state.colorCostPlus) *
+      state.quantity;
+    return subtotal;
   };
 
   useEffect(() => {
     setIsLoad(true);
-    productApi.getProductById(productID).then((data) => {
-      setProductData(data.product);
-      setIsLoad(false);
-    });
+    productApi
+      .getProductById(productID)
+      .then((data) => {
+        setProductData(data.product);
+
+        setState({
+          ...state,
+          capacity: data.product.capacities[0].capacity,
+          capacityCostPlus: data.product.capacities[0].plusCost,
+          colorCostPlus: data.product.colors[0].color.plusCost,
+          productID: data.product._id,
+          indexColor: data.product.colors[0].color.indexColor,
+          colorName: data.product.colors[0].color.nameColor,
+          photo: data.product.colors[0].image.photo,
+        });
+      })
+      .finally(() => setIsLoad(false));
   }, []);
   const dispatch = useDispatch();
   const handleAddToCart = () => {
-    dispatch(
-      addNewItemCart(state)
-    );
+    dispatch(addNewItemCart(state));
   };
 
   if (isLoad) return <div> Loading ....</div>;
@@ -68,7 +101,9 @@ const ProductItem: React.FC = () => {
         <div className="row">
           <div className="col-2">
             <img
-              src={state.photo? state.photo:productData?.colors[0].image.photo}
+              src={
+                state.photo ? state.photo : productData?.colors[0].image.photo
+              }
               alt=""
               width="100%"
               id="product-img"
@@ -92,7 +127,7 @@ const ProductItem: React.FC = () => {
             <h1>{productData?.name}</h1>
             <h4>
               <NumberFormat
-                value={productData?.priceOnSales}
+                value={subTotal()}
                 displayType={"text"}
                 thousandSeparator={true}
               />{" "}
@@ -100,31 +135,45 @@ const ProductItem: React.FC = () => {
             </h4>
             <select>
               {productData?.capacities.map((capacity) => (
-                <option value={capacity.capacity} onClick={e=>handleChangeCapacity(capacity.capacity,capacity.plusCost)} >{capacity.capacity}GB</option>
-                
+                <option
+                  value={capacity.capacity}
+                  onClick={(e) =>
+                    handleChangeCapacity(capacity.capacity, capacity.plusCost)
+                  }
+                >
+                  {capacity.capacity}GB
+                </option>
               ))}
             </select>
             <div className="color-container">
-              <h3 className="title-color">Color</h3>  <div className="colors">
-              {productData?.colors.map((color,index) => (
-            
-              
-                  <span onClick ={(e) => handleChangeColor(color.color.nameColor, color.color.indexColor, color.color.plusCost, color.image.photo)}
+              <h3 className="title-color">Color</h3>{" "}
+              <div className="colors">
+                {productData?.colors.map((color, index) => (
+                  <span
+                    onClick={(e) =>
+                      handleChangeColor(
+                        color.color.nameColor,
+                        color.color.indexColor,
+                        color.color.plusCost,
+                        color.image.photo
+                      )
+                    }
                     className="color"
-                    style={{backgroundColor:color.color.indexColor}}
+                    style={{ backgroundColor: color.color.indexColor }}
                     color={color.color.nameColor}
                   ></span>
-               
-                
-            
-                ))}  </div>
+                ))}{" "}
+              </div>
             </div>
-          
-            <input type="number"
-                  value={state.quantity}
-                  width="auto"
-                  min="1"
-                  max="10" onChange={(e) => handleChangeQuantity(e)} />
+
+            <input
+              type="number"
+              value={state.quantity}
+              width="auto"
+              min="1"
+              max="10"
+              onChange={(e) => handleChangeQuantity(e)}
+            />
             <div className="btn" onClick={(e) => handleAddToCart()}>
               Add To Cart
             </div>

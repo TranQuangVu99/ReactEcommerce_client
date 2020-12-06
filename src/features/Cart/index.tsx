@@ -8,6 +8,7 @@ import { useHistory, withRouter } from "react-router-dom";
 
 function Carts() {
   const { products, carts } = useSelector((state: RootState) => state.cart);
+  console.log(carts)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,7 +57,7 @@ function Carts() {
             <tr key={product._id}>
               <td>
                 <div className="cart-info">
-                  <img src={product.colors[0].image.photo} alt="" />
+                  <img src={carts[index].photo} alt="" />
                   <div>
                     <p>{product.name}</p>
                     <small>
