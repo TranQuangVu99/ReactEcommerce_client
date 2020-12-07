@@ -55,10 +55,16 @@ const MenuComponent = () => {
           active={activeItem === 'doanhnghiep'}
           onClick={(e) => handleItemClick(e,'doanhnghiep')}
         />
+        
         <Menu.Item
-          name='Hướng dẫn mua hàng'
-          active={activeItem === 'huongdanmuahang'}
-          onClick={(e) => handleItemClick(e,'huongdanmuahang')}
+          name='Chính sách sử dụng'
+          active={activeItem === 'sudung'}
+          onClick={(e) => handleItemClick(e,'sudung')}
+        />
+        <Menu.Item
+          name='Chính sách bảo mật'
+          active={activeItem === 'baomat'}
+          onClick={(e) => handleItemClick(e,'baomat')}
         />
       </Menu>
     )

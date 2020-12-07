@@ -21,6 +21,7 @@ import { setLoginSuccess } from "features/Account/accountSlice";
 import { ToastContainer } from "react-toastify";
 import OrderHistory from "features/OrderHistory";
 import Policy from "features/Policy";
+import About from "features/About";
 
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
@@ -55,7 +56,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
         <Route exact path="/order" component={Order} />
         <Route exact path="/payment" component={Payment} />
         <Route exact path="/orderhistory" component={OrderHistory} />
-        
+        <Route exact path="/about" component={About} />
       </Switch>
       <Footer />
     </Fragment>

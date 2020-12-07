@@ -48,7 +48,7 @@ function Header() {
                   <Link to="/about"> About </Link>
                 </li>
                 <li>
-                  <Link to="/contact"> Liên Hệ </Link>
+                  <Link to="/policy/gopy"> Liên Hệ </Link>
                 </li>
 
                 <li>

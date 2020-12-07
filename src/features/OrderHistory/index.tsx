@@ -9,7 +9,6 @@ import { fetchAllOderHistory } from "./orderHistorySlice";
 function OrderHistory() {
   const { orders } = useSelector((state: RootState) => state.orderHistory);
 
-  console.log(orders);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchAllOderHistory());

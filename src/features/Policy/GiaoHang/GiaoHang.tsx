@@ -1,16 +1,16 @@
 import React from "react";
 import { Table } from "semantic-ui-react";
-import "./GiaoHang.scss";
+
 
 const GiaoHang = () => {
   return (
     <div>
       <h3>Chính sách giao hàng </h3>
       <h2>1. PHẠM VI ÁP DỤNG</h2>
-      <p>Những khu vực tỉnh thành phố Hồ Chí Minh có hệ thống logo</p>
+      <p>Những khu vực tỉnh thành phố Hồ Chí Minh có hệ thống Tenet</p>
       <h2>2. THỜI GIAN NHẬN HÀNG</h2>
       <p>
-        logo nhận giao hàng nhanh trong ngày với khoảng cách từ các siêu thị có
+        Tenet nhận giao hàng nhanh trong ngày với khoảng cách từ các siêu thị có
         hàng đến điểm giao là 20 Km. Khoảng cách lớn hơn 20 Km nhân viên chúng
         tôi sẽ tư vấn cách thức giao hàng thuận tiện nhất cho khách hàng. Cụ thể
         :

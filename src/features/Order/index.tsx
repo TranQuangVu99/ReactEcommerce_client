@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "app/store";
 import { setPriceShip, setScript } from "features/Cart/cartSlice";
 import { fetchAllAddress } from "features/Account/accountSlice";
+import { Item } from "semantic-ui-react";
 
 const Order = () => {
   const isLogin = useSelector((state: RootState) => state.account.isLogin);
@@ -51,7 +52,7 @@ const Order = () => {
 
   if (!isLogin) return <Redirect to="/account" />;
 
-  if(!defalutAddress) return <Redirect to="/address" />;
+  if (!defalutAddress) return <Redirect to="/address" />;
 
   return (
     <Fragment>
@@ -120,34 +121,36 @@ const Order = () => {
                 <h4>Estimate Delivery : 24 December , 2020</h4>
                 <div className="cart-placeorder">
                   <div className="col-7">
-                    {products.map((product, index) => (
-                      <div className="row-order">
-                        <div className="col-2-cart">
-                          <img src={carts[index].photo} alt=""></img>
-                        </div>
-                        <div className="col-2-cart">
-                          <strong>{product.name}</strong>
-                          <br />
-                          <span>
-                            <small>
-                              {" "}
+                    <Item.Group divided>
+                      {products.map((product, index) => (
+                        <Item>
+                          <Item.Image src={carts[index].photo} />
+
+                          <Item.Content>
+                            <Item.Header as="a">{product.name}</Item.Header>
+                            <Item.Meta>
+                              <span className="cinema">
+                                Quantity : {carts[index].quantity}
+                              </span>
+                            </Item.Meta>
+                            <Item.Description>
+                              Price :
                               <NumberFormat
-                                value={product.priceOnSales}
+                                value={
+                                  (carts[index].capacityCostPlus +
+                                    carts[index].colorCostPlus +
+                                    product.priceOnSales) *
+                                  carts[index].quantity
+                                }
                                 displayType={"text"}
                                 thousandSeparator={true}
-                              />{" "}
+                              />
                               ₫
-                            </small>
-                          </span>
-                          <br />
-                          <span>
-                            <small style={{ justifyContent: "center" }}>
-                              Số lượng : {carts[index].quantity}
-                            </small>
-                          </span>
-                        </div>
-                      </div>
-                    ))}
+                            </Item.Description>
+                          </Item.Content>
+                        </Item>
+                      ))}
+                    </Item.Group>
                   </div>
 
                   <div className="col-3">

@@ -10,11 +10,11 @@ const ThanhToan = () => {
       <h4>1. Tại cửa hàng</h4>
       <p>
         Quý khách có thể đến mua hàng & thanh toán trực tiếp tại các nơi thuộc
-        hệ thống logo
+        hệ thống Tenet
       </p>
       <h4>2. Tại nhà/nơi nhận hàng</h4>
       <p>
-        Thanh toán cho nhân viên giao hàng trực tiếp của logo tại bất kỳ đâu bạn
+        Thanh toán cho nhân viên giao hàng trực tiếp của Tenet tại bất kỳ đâu bạn
         yêu cầu (trong phạm vi 20KM tính từ cửa hàng).
       </p>
       <h3>II.Thanh toán bằng thẻ ATM, Visa, MasterCard</h3>
@@ -42,7 +42,7 @@ const ThanhToan = () => {
           </Table.Row>
           <Table.Row>
             <Table.Cell>Chủ tài khoản</Table.Cell>
-            <Table.Cell> CONG TY CO PHAN LOGO</Table.Cell>
+            <Table.Cell> CONG TY CO PHAN Tenet</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell> Số tài khoản</Table.Cell>

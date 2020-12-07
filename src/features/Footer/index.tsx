@@ -2,8 +2,8 @@ import React, { Fragment } from "react";
 import "features/HomePage/HomePage.scss";
 import PlayStore from "assets/images/play-store.png";
 import AppStore from "assets/images/app-store.png";
-import LogoWhite from "assets/images/logo-white.png";
-import { withRouter } from "react-router-dom";
+import LogoWhite from "assets/images/logo.png";
+import { Link, withRouter } from "react-router-dom";
 function Footer() {
   return (
     <Fragment>
@@ -32,9 +32,23 @@ function Footer() {
               <ul>
                 <li>Coupons</li>
                 <li>Blog Post</li>
-                <li>Return Policy</li>
+                <li>
+                  <Link to='/policy/doitra'>
+                  Return Policy
+                  </Link>
+                  </li>
                 <li>Join</li>
               </ul>
+           
+                <h4>Gọi mua hàng : 1800.1234 </h4>
+                <h4>Gọi khiếu nại : 1800.1235 </h4>
+                <h4>
+  
+                Gọi bảo hành : 1800.1236 
+                 
+                  </h4>
+                <h4>Kỹ thuật : 1800.1237 </h4>
+              
             </div>
             <div className="footer-col-4">
               <h3>Follow us</h3>

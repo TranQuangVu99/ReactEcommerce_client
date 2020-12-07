@@ -32,7 +32,7 @@ export const login = createAsyncThunk(
   async (accounts: ILoginForm, thunkAPI) => {
     try {
       const res = await accountApi.login(accounts);
-      messageSuccess("Đăng nhập thành công", 3000);
+      messageSuccess("Đăng nhập thành công", 2000);
       return res;
     } catch (error) {
       const err = error as IErrorFromAPI;
